@@ -35,3 +35,27 @@ class simpleFactory
 $create = new simpleFactory();
 $result = $create->produce('car');
 echo $result->ride();
+
+class simpleFactory1
+{
+    public static function produceBike()
+    {
+        return new Bike();
+    }
+
+    public static function produceCar()
+    {
+        return new Car();
+    }
+}
+
+class Test
+{
+    public function create()
+    {
+        $bike = simpleFactory1::produceBike();
+        $bike->ride();
+        $car = simpleFactory1::produceCar();
+        $car->ride();
+    }
+}
