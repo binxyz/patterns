@@ -8,7 +8,7 @@ class Man implements people
 {
     public function marry()
     {
-        echo '送钻戒';
+        echo "man";
     }
 }
 
@@ -16,16 +16,16 @@ class Woman implements people
 {
     public function marry()
     {
-        echo '穿婚纱';
+        echo "Woman";
     }
 }
 
-interface factory
+interface Factory
 {
     public function create();
 }
 
-class manFactory implements factory
+class ManFactory implements Factory
 {
     public function create()
     {
@@ -33,7 +33,7 @@ class manFactory implements factory
     }
 }
 
-class womanFactory implements factory
+class WomanFactory implements Factory
 {
     public function create()
     {
@@ -41,16 +41,16 @@ class womanFactory implements factory
     }
 }
 
-class Test
+class Client
 {
     public function test()
     {
-        $man = new manFactory();
-        $res = $man->create();
-        $res->marry();
+        $factory = new ManFactory();
+        $man = $factory->create();
+        $man->marry();
 
-        $woman = new womanFactory();
-        $res = $woman->create();
-        $res->marry();
+        $factory1 = new WomanFactory();
+        $woman = $factory1->create();
+        $woman->marry();
     }
 }

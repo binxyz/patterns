@@ -4,86 +4,183 @@
 注意：这里和工厂方法的区别是：一系列，而工厂方法则是一个。
 那么，我们是否就可以想到在接口create里再增加创建“一系列”对象的方法呢？
 */
+
 interface people
 {
-    public function marry();
+    public function givGift();
 }
 
-class oMan implements people
+class YoungMan implements people
 {
-    public function marry()
+    public function givGift()
     {
-        echo '送钻戒';
+        echo "暗恋";
     }
 }
 
-class yMan implements people
+class OldMan implements people
 {
-    public function marry()
+    public function givGift()
     {
-        echo '暗恋';
+        echo "送钻戒";
     }
 }
 
-class oWoman implements people
+class YoungWoman implements people
 {
-    public function marry()
+    public function givGift()
     {
-        echo '接受';
+        echo "害羞";
     }
 }
 
-class iWoman implements people
+class OldWoman implements people
 {
-    public function marry()
+    public function givGift()
     {
-        echo '害羞';
+        echo "接受";
     }
 }
 
-//这里是本质区别所在，将对象的创建抽象成一个接口
-interface factoryCreate
+interface AbstractFactory
 {
-    public function createOpen();  //外向
-    public function createIntro(); //内向
+    public function createOpen();
+    public function createOld();
 }
 
-class ss implements factoryCreate
-{
-    public function createOpen()
-    {
-        // TODO: Implement createOpen() method.
-        echo 'da';
-    }
-    public function createIntro()
-    {
-        // TODO: Implement createIntro() method.
-        echo 'd';
-    }
-}
-
-class manFactory implements factoryCreate
+class ManFactory implements AbstractFactory
 {
     public function createOpen()
     {
-        return new oMan();
+        return new OldMan();
     }
 
-    public function createIntro()
+    public function createOld()
     {
-        return new yMan();
+        return new YoungMan();
     }
 }
 
-class womanFactory implements factoryCreate
+class WomanFactory implements AbstractFactory
 {
     public function createOpen()
     {
-        return new oWoman();
+        return new OldWoman();
     }
 
-    public function createIntro()
+    public function createOld()
     {
-        return new iWoman();
+        return new YoungWoman();
     }
 }
+
+class Client
+{
+    public static function main()
+    {
+        self::run(new ManFactory());
+        self::run(new WomanFactory());
+    }
+
+    public static function run(AbstractFactory $factory)
+    {
+        $res = $factory->createOld();
+        $res->giveGift();
+        $factory->createOpen();
+        $res->giveGift();
+    }
+}
+
+$client = new Client();
+$client->main();
+
+
+###############################################
+
+//抽象工厂
+interface AnimalFactory {
+
+    public function createCat();
+    public function createDog();
+
+}
+
+//具体工厂
+class BlackAnimalFactory implements AnimalFactory {
+
+    function createCat(){
+        return new BlackCat();
+    }
+
+    function createDog(){
+        return new BlackDog();
+    }
+}
+
+class WhiteAnimalFactory implements AnimalFactory {
+
+    function createCat(){
+        return new WhiteCat();
+    }
+
+    function createDog(){
+        return new WhiteDog();
+    }
+}
+
+//抽象产品
+interface Cat {
+    function Voice();
+}
+
+interface Dog {
+    function Voice();
+}
+
+//具体产品
+class BlackCat implements Cat {
+
+    function Voice(){
+        echo '黑猫喵喵……';
+    }
+}
+
+class WhiteCat implements Cat {
+
+    function Voice(){
+        echo '白猫喵喵……';
+    }
+}
+
+class BlackDog implements Dog {
+
+    function Voice(){
+        echo '黑狗汪汪……';
+    }
+}
+
+class WhiteDog implements Dog {
+
+    function Voice(){
+        echo '白狗汪汪……';
+    }
+}
+
+//客户端
+class Client {
+
+    public static function main() {
+        self::run(new BlackAnimalFactory());
+        self::run(new WhiteAnimalFactory());
+    }
+
+    public static function run(AnimalFactory $AnimalFactory){
+        $cat = $AnimalFactory->createCat();
+        $cat->Voice();
+
+        $dog = $AnimalFactory->createDog();
+        $dog->Voice();
+    }
+}
+Client::main();
+?>

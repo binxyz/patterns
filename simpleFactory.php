@@ -1,61 +1,41 @@
 <?php
-interface Vehicle
+
+interface people
 {
-    public function ride();
+    public function marry();
 }
 
-class Bike implements Vehicle
+class Man implements people
 {
-    public function ride()
+    public function marry()
     {
-        echo 'bike';
+        echo "去取老婆";
     }
 }
 
-class Car implements Vehicle
+class Woman implements people
 {
-    public function ride()
+    public function marry()
     {
-        echo 'car';
+        echo "嫁男人";
     }
 }
 
-class simpleFactory
+class SimpleFactory
 {
-    public function produce($type)
+    public static function createMan()
     {
-        if ($type == 'bike') {
-            return new Bike();
-        } elseif ($type == 'car') {
-            return new Car();
-        }
+        return new Man();
+    }
+
+    public static function createWomen()
+    {
+        return new Woman();
     }
 }
 
-$create = new simpleFactory();
-$result = $create->produce('car');
-echo $result->ride();
+$man = SimpleFactory::createMan();
+$man->marry();
 
-class simpleFactory1
-{
-    public static function produceBike()
-    {
-        return new Bike();
-    }
-
-    public static function produceCar()
-    {
-        return new Car();
-    }
-}
-
-class Test
-{
-    public function create()
-    {
-        $bike = simpleFactory1::produceBike();
-        $bike->ride();
-        $car = simpleFactory1::produceCar();
-        $car->ride();
-    }
-}
+$women = SimpleFactory::createWomen();
+$women->marry();
